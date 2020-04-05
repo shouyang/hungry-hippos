@@ -14,7 +14,7 @@ class LocationsMap extends React.Component {
     return (
       <Map center={userPosition} zoom={this.props.map.zoom}>
         <TileLayer attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors' url='https://{s}.tile.osm.org/{z}/{x}/{y}.png'/>
-        <Marker position={userPosition}>
+        <Marker position={userPosition} draggable={false}>
           <Popup> A pretty CSS3 popup. <br/> Easily customizable.</Popup>
         </Marker>
         <Circle center={userPosition} radius={1000}></Circle>
@@ -37,7 +37,7 @@ class LocationsMap extends React.Component {
     // const distanceToLocation = location.distanceToLocationMeters(this.props.map.lat, this.props.map.lng);
     return (
       <Marker position={[location.lat, location.long]} icon={LocationsMap.greenIcon}>
-        <Popup>{location.name} 
+        <Popup>{location.name}  {location.distanceToLocationMeters(this.props.map.lat, this.props.map.lng)}
         </Popup>
       </Marker>
     )

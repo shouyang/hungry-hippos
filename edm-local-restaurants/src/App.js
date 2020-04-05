@@ -44,6 +44,7 @@ class GoogleSheetsParser {
 
 class App extends React.Component {
   state =  {
+    isFilterSet: false,
     locations : [],
     map: {
       lat: 53.5461,
@@ -61,7 +62,6 @@ class App extends React.Component {
       <div className="App"> 
         <PageHeader></PageHeader>
         <LocationsMap {...this.state} ></LocationsMap>
-        <Button className="ui button" onClick={this.handleGetMyLocation.bind(this)} style={{backgroundColor:"limegreen"}}>Get My Location</Button>
         <Form.Input
             action="Test"
             label={`Test`}
@@ -73,6 +73,10 @@ class App extends React.Component {
             type='range'
             value={5}
           />
+        <Button className="ui button" onClick={this.handleGetMyLocation.bind(this)} style={{backgroundColor:"limegreen"}}>Get My Location</Button>
+        <Button className="ui button" onClick={this.handleFilterLocation.bind(this)} style={{backgroundColor:"limegreen"}}>Filter For Locations Near Me</Button>
+        <Button className="ui button" onClick={this.handleFilterReset.bind(this)} style={{backgroundColor:"limegreen"}}>Reset Filter</Button>
+        
         <LocationsTable locations={this.state.locations} ></LocationsTable>;
         {this.renderLocationsAsJSONArray()}
       </div> 
@@ -93,7 +97,7 @@ class App extends React.Component {
     console.log("handleGetMyLocation");
     const success = (pos) =>  {
       var crd = pos.coords;
-      this.setState({lat: crd.latitude, lng: crd.longitude})
+      this.setState({map:{lat: crd.latitude, lng: crd.longitude}})
     }
 
     function error(err) {
@@ -102,8 +106,30 @@ class App extends React.Component {
     navigator.geolocation.getCurrentPosition(success, error);
   }
 
-  handleFilterPlaces() {
+  handleFilterLocation = () => {
+    const updateLocations = (location) => {
+      const distanceToMarker = location.distanceToLocationMeters(this.state.map.lat, this.state.map.lng);
+      if (distanceToMarker <= 1000) {
+        location.shouldBeShown = true;
+      }
+      else {
+        location.shouldBeShown = false;
+      }
+      return location;
+    }
 
+    const newLocations = this.state.locations.map(updateLocations);
+    this.setState( {locations: newLocations});
+  }
+
+  handleFilterReset = () => {
+    const updateLocations = (location) => {
+      location.shouldBeShown = true;
+      return location;
+    }
+
+    const newLocations  = this.state.locations.map(updateLocations);
+    this.setState( {locations: newLocations});
   }
 }
 export default App;

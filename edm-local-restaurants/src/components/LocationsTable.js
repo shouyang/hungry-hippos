@@ -9,7 +9,9 @@ class LocationsTable extends React.Component {
   static keysToInclude = ["name", "cusine", "area", "hours", "delivery", "pickup", "giftcards", "dietaryNeeds", "address", "comments"]
 
   render() {
-    return (<Table>{this.renderTableHeader(this.props.locations)}{this.renderTableBody(this.props.locations)}</Table>)
+    const locationsTodisplay = this.props.locations.filter( (location) => location.shouldBeShown)
+
+    return (<Table>{this.renderTableHeader(this.props.locations)}{this.renderTableBody(locationsTodisplay)}</Table>)
   }
 
   renderTableHeader() {
