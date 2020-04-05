@@ -5,7 +5,7 @@ import 'semantic-ui-css/semantic.min.css'
 import './App.css';
 
 import { Map, Marker, Popup, TileLayer } from 'react-leaflet'
-import { Table, Header, Button, Form} from 'semantic-ui-react'
+import { Table, Header, Button, Form, Message, Icon, MessageHeader} from 'semantic-ui-react'
 
 var greenIcon = new L.Icon({
   iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
@@ -152,6 +152,20 @@ class GoogleSheetsParser {
   }
 }
 
+class MessageExampleIcon extends React.Component {
+  render() {
+    return (
+      <Message>
+        <Message.Header>Page Header</Message.Header>
+        <p>
+          Big Intro
+        </p>
+    </Message>
+    )
+  }
+}
+
+
 class App extends React.Component {
   state =  {
     locations : [],
@@ -202,7 +216,7 @@ class App extends React.Component {
   
     return (
       <div className="App"> 
-        <Header>Edmonton-Local</Header>
+        <MessageExampleIcon></MessageExampleIcon>
         <LocationsMap {...this.state} ></LocationsMap>
         <Button className="ui button" onClick={this.handleGetMyLocation.bind(this)} style={{backgroundColor:"limegreen"}}>Get My Location</Button>
         <Form.Input
