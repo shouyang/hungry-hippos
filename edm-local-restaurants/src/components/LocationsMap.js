@@ -14,13 +14,13 @@ class LocationsMap extends React.Component {
     return (
       <Map center={userPosition} zoom={this.props.map.zoom}>
         <TileLayer attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors' url='https://{s}.tile.osm.org/{z}/{x}/{y}.png'/>
-        <Marker position={userPosition} draggable={false}>
+        <Marker position={userPosition} draggable={true} onDragend={this.props.handleMarkerDragEnd}>
           <Popup> A pretty CSS3 popup. <br/> Easily customizable.</Popup>
         </Marker>
         <Circle center={userPosition} radius={1000}></Circle>
         {locationsWithMapData.map(this.renderLocationMarker.bind(this))}
       </Map>
-    );
+    );    
   }
 
   static greenIcon = new L.Icon({

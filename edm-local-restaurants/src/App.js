@@ -61,7 +61,7 @@ class App extends React.Component {
     return (
       <div className="App"> 
         <PageHeader></PageHeader>
-        <LocationsMap {...this.state} ></LocationsMap>
+        <LocationsMap {...this.state} handleMarkerDragEnd={this.handleMarkerDragEnd}></LocationsMap>
         <Form.Input
             action="Test"
             label={`Test`}
@@ -131,5 +131,12 @@ class App extends React.Component {
     const newLocations  = this.state.locations.map(updateLocations);
     this.setState( {locations: newLocations});
   }
+
+  handleMarkerDragEnd = (event) => {
+    const {lat, lng} = event.target._latlng;
+    this.setState({map: {lat, lng}});
+    this.handleFilterLocation();
+  }
 }
+
 export default App;
