@@ -17,7 +17,7 @@ class LocationsMap extends React.Component {
         <Marker position={userPosition} draggable={true} onDragend={this.props.handleMarkerDragEnd}>
           <Popup> A pretty CSS3 popup. <br/> Easily customizable.</Popup>
         </Marker>
-        <Circle center={userPosition} radius={1000}></Circle>
+        <Circle center={userPosition} radius={this.props.map.filterRadius * 1000}></Circle>
         {locationsWithMapData.map(this.renderLocationMarker.bind(this))}
       </Map>
     );    

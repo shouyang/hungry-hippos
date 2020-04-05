@@ -49,7 +49,8 @@ class App extends React.Component {
     map: {
       lat: 53.5461,
       lng: -113.4938,
-      zoom: 13
+      zoom: 13,
+      filterRadius: 5
     }
   }
 
@@ -63,15 +64,16 @@ class App extends React.Component {
         <PageHeader></PageHeader>
         <LocationsMap {...this.state} handleMarkerDragEnd={this.handleMarkerDragEnd}></LocationsMap>
         <Form.Input
-            action="Test"
             label={`Test`}
             min={1}
             max={10}
-            name='Test'
-            onChange={() => {}}
             step={1}
+            value={this.state.map.filterRadius}
+            name='Test'
+            onChange={this.handleFilterRadiusChanged.bind(this)}
+
             type='range'
-            value={5}
+            
           />
         <Button className="ui button" onClick={this.handleGetMyLocation.bind(this)} style={{backgroundColor:"limegreen"}}>Get My Location</Button>
         <Button className="ui button" onClick={this.handleFilterLocation.bind(this)} style={{backgroundColor:"limegreen"}}>Filter For Locations Near Me</Button>
@@ -97,7 +99,9 @@ class App extends React.Component {
     console.log("handleGetMyLocation");
     const success = (pos) =>  {
       var crd = pos.coords;
-      this.setState({map:{lat: crd.latitude, lng: crd.longitude}})
+
+      console.log(crd);
+      this.setState({map:{ ...this.state.map, lat: crd.latitude, lng: crd.longitude}})
     }
 
     function error(err) {
@@ -106,10 +110,15 @@ class App extends React.Component {
     navigator.geolocation.getCurrentPosition(success, error);
   }
 
+  handleFilterRadiusChanged = (event) => {
+    this.setState({map: { ...this.state.map, filterRadius: event.target.value}})
+    this.handleFilterLocation();
+  } 
+
   handleFilterLocation = () => {
     const updateLocations = (location) => {
       const distanceToMarker = location.distanceToLocationMeters(this.state.map.lat, this.state.map.lng);
-      if (distanceToMarker <= 1000) {
+      if (distanceToMarker <= this.state.map.filterRadius * 1000) {
         location.shouldBeShown = true;
       }
       else {
@@ -134,7 +143,7 @@ class App extends React.Component {
 
   handleMarkerDragEnd = (event) => {
     const {lat, lng} = event.target._latlng;
-    this.setState({map: {lat, lng}});
+    this.setState({map: { ...this.state.map, lat, lng}});
     this.handleFilterLocation();
   }
 }
