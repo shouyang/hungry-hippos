@@ -1,123 +1,13 @@
 import React from 'react';
-import L from 'leaflet'
+import { Button, Form } from 'semantic-ui-react'
 
 import 'semantic-ui-css/semantic.min.css'
 import './App.css';
 
-import { Map, Marker, Popup, TileLayer } from 'react-leaflet'
-import { Table, Header, Button, Form, Message, Icon, MessageHeader} from 'semantic-ui-react'
-
-var greenIcon = new L.Icon({
-  iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
-  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41]
-});
-
-class Location {
-  // Data class representing one row from the Google Sheets Document.
-  constructor(entry) {
-    // Unpacks interesting entries from the Google Sheets JSON API into a simpler object.
-    this.id = entry.id.$t;
-
-    this.name                = entry["gsx$name"].$t;
-    this.status              = entry["gsx$status"].$t;
-    this.cusine              = entry["gsx$cusine"].$t;
-    this.area                = entry["gsx$area"].$t;
-    this.hours               = entry["gsx$hours-unsureofcovid-19hours"].$t;
-    this.delivery            = entry["gsx$delivery"].$t;
-    this.pickup              = entry["gsx$pickup"].$t;
-    this.giftcards           = entry["gsx$giftcards"].$t;
-    this.dietaryNeeds        = entry["gsx$dietaryneedsserved"].$t;
-    this.address             = entry["gsx$address"].$t;
-    this.comments            = entry["gsx$comments"].$t;
-
-    this.lat                 = entry["gsx$lat"].$t;
-    this.long                = entry["gsx$long"].$t;
-  }
-
-  // TODO: Probably add some functionality to unpack attributes (addresses, hours, cusine types etc...)
-  // TODO: Maybe add resolvers to Google Maps, Food Delivery etc...
-}
-
-class LocationsMap extends React.Component {
-
-  renderLocationMarker(location) {
-    return (
-      <Marker position={ [location.lat, location.long]} icon={greenIcon}>
-        <Popup>{location.name}</Popup>
-      </Marker>
-    )
-  }
-
-  render() {
-    const position = [this.props.lat, this.props.lng];
-  
-    const locationsWithLongLat = this.props.locations.filter( (location) => {return !!(!!location.lat && !!location.long)})
-    console.log(locationsWithLongLat);
-
-    return (
-      <Map center={position} zoom={this.props.zoom}>
-        <TileLayer
-          attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-          url='https://{s}.tile.osm.org/{z}/{x}/{y}.png'
-        />
-        <Marker position={position}>
-          <Popup>
-            A pretty CSS3 popup. <br/> Easily customizable.
-          </Popup>
-        </Marker>
-
-        {locationsWithLongLat.map(this.renderLocationMarker)}
-      </Map>
-    );
-  }
-}
-
-class LocationsTable extends React.Component {
-  // Table to display list of locations
-  static keysToInclude = ["name", "cusine", "area", "hours", "delivery", "pickup", "giftcards", "dietaryNeeds", "address", "comments"]
-
-  renderHeader() {
-    return (
-      <Table.Header>
-        {LocationsTable.keysToInclude.map( (key) => (<Table.HeaderCell>{key}</Table.HeaderCell>))}
-      </Table.Header>
-    )
-  }
-
-  renderBody(locations) {
-    return (
-      <Table.Body>
-        {locations.map(this.renderLocationRow) }
-      </Table.Body>
-    )
-  }
-
-  renderLocationRow(location) {
-    return (
-      <Table.Row>
-        {
-          LocationsTable.keysToInclude.map(
-          (key) => <Table.Cell>{location[key]}</Table.Cell>
-          )
-        }
-      </Table.Row>
-    )
-  }
-
-  render() {
-    return (
-      <Table celled>
-        {this.renderHeader(this.props.locations)}
-        {this.renderBody(this.props.locations)}
-      </Table>
-    )
-  }
-}
-
+import PageHeader from "./components/PageHeader";
+import Location from "./models/Location";
+import LocationsMap from "./components/LocationsMap";
+import LocationsTable from "./components/LocationsTable";
 
 class GoogleSheetsParser {
   // Handler for requesting and parsing Google Sheets lists requests.
@@ -151,20 +41,6 @@ class GoogleSheetsParser {
     return new Location(entry);
   }
 }
-
-class MessageExampleIcon extends React.Component {
-  render() {
-    return (
-      <Message>
-        <Message.Header>Page Header</Message.Header>
-        <p>
-          Big Intro
-        </p>
-    </Message>
-    )
-  }
-}
-
 
 class App extends React.Component {
   state =  {
@@ -216,7 +92,7 @@ class App extends React.Component {
   
     return (
       <div className="App"> 
-        <MessageExampleIcon></MessageExampleIcon>
+        <PageHeader></PageHeader>
         <LocationsMap {...this.state} ></LocationsMap>
         <Button className="ui button" onClick={this.handleGetMyLocation.bind(this)} style={{backgroundColor:"limegreen"}}>Get My Location</Button>
         <Form.Input

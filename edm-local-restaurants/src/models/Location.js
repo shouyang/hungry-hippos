@@ -20,6 +20,11 @@ class Location {
       this.long                = entry["gsx$long"].$t;
     }
   
+
+    hasLocationData() {
+      return !!(!!this.lat && !!this.long);
+    }
+
     // TODO: Probably add some functionality to unpack attributes (addresses, hours, cusine types etc...)
     // TODO: Maybe add resolvers to Google Maps, Food Delivery etc...
   }
