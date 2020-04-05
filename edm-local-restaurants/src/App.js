@@ -1,6 +1,10 @@
 import React from 'react';
+
+import 'semantic-ui-css/semantic.min.css'
 import './App.css';
 
+import { Map, Marker, Popup, TileLayer } from 'react-leaflet'
+import { Icon, Label, Menu, Table } from 'semantic-ui-react'
 
 class Location {
   // Data class representing one row from the Google Sheets Document.
@@ -24,6 +28,77 @@ class Location {
   // TODO: Probably add some functionality to unpack attributes (addresses, hours, cusine types etc...)
   // TODO: Maybe add resolvers to Google Maps, Food Delivery etc...
 }
+
+class LocationsMap extends React.Component {
+  constructor() {
+    super()
+    this.state = {
+      lat: 53.5461,
+      lng: -113.4938,
+      zoom: 13
+    }
+  }
+
+  render() {
+    const position = [this.state.lat, this.state.lng];
+    return (
+      <Map center={position} zoom={this.state.zoom}>
+        <TileLayer
+          attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+          url='https://{s}.tile.osm.org/{z}/{x}/{y}.png'
+        />
+        <Marker position={position}>
+          <Popup>
+            A pretty CSS3 popup. <br/> Easily customizable.
+          </Popup>
+        </Marker>
+      </Map>
+    );
+  }
+}
+
+class LocationsTable extends React.Component {
+  // Table to display list of locations
+  static keysToInclude = ["name", "cusine", "area", "hours", "delivery", "pickup", "giftcards", "dietaryNeeds", "address", "comments"]
+
+  renderHeader() {
+    return (
+      <Table.Header>
+        {LocationsTable.keysToInclude.map( (key) => (<Table.HeaderCell>{key}</Table.HeaderCell>))}
+      </Table.Header>
+    )
+  }
+
+  renderBody(locations) {
+    return (
+      <Table.Body>
+        {locations.map(this.renderLocationRow) }
+      </Table.Body>
+    )
+  }
+
+  renderLocationRow(location) {
+    return (
+      <Table.Row>
+        {
+          LocationsTable.keysToInclude.map(
+          (key) => <Table.Cell>{location[key]}</Table.Cell>
+          )
+        }
+      </Table.Row>
+    )
+  }
+
+  render() {
+    return (
+      <Table celled>
+        {this.renderHeader(this.props.locations)}
+        {this.renderBody(this.props.locations)}
+      </Table>
+    )
+  }
+}
+
 
 class GoogleSheetsParser {
   // Handler for requesting and parsing Google Sheets lists requests.
@@ -74,15 +149,17 @@ class App extends React.Component {
   }
 
   render() {
-    return this.renderLocationsAsJSONArray();
+    return (
+      <div className="App"> 
+        <LocationsMap></LocationsMap>
+        <LocationsTable locations={this.state.locations} ></LocationsTable>;
+      </div> 
+    ) 
   }
 
   renderLocationsAsJSONArray() {
     // Helper function to quickly display whats in locations.
     return <div>{ JSON.stringify(this.state.locations, null, "\t") }</div>;
   }
-
-
 }
 export default App;
-
