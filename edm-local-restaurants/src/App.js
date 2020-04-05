@@ -4,7 +4,7 @@ import 'semantic-ui-css/semantic.min.css'
 import './App.css';
 
 import { Map, Marker, Popup, TileLayer } from 'react-leaflet'
-import { Icon, Label, Menu, Table } from 'semantic-ui-react'
+import { Table, Header, Button, Form} from 'semantic-ui-react'
 
 class Location {
   // Data class representing one row from the Google Sheets Document.
@@ -30,19 +30,10 @@ class Location {
 }
 
 class LocationsMap extends React.Component {
-  constructor() {
-    super()
-    this.state = {
-      lat: 53.5461,
-      lng: -113.4938,
-      zoom: 13
-    }
-  }
-
   render() {
-    const position = [this.state.lat, this.state.lng];
+    const position = [this.props.lat, this.props.lng];
     return (
-      <Map center={position} zoom={this.state.zoom}>
+      <Map center={position} zoom={this.props.zoom}>
         <TileLayer
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           url='https://{s}.tile.osm.org/{z}/{x}/{y}.png'
@@ -134,9 +125,12 @@ class GoogleSheetsParser {
 }
 
 class App extends React.Component {
-
   state =  {
-    locations : []
+    locations : [],
+    lat: 53.5461,
+    lng: -113.4938,
+    zoom: 13,
+    value:5
   }
 
   componentDidMount() {
@@ -148,10 +142,52 @@ class App extends React.Component {
     this.setState(newState);
   }
 
+  handleGetMyLocation() {
+    var options = {
+      enableHighAccuracy: false,
+      timeout: 5000,
+      maximumAge: 1000
+    };
+    
+    const success = (pos) =>  {
+      var crd = pos.coords;
+      this.setState({lat: crd.latitude, lng: crd.longitude})
+    }
+
+
+    function error(err) {
+      console.warn(`ERROR(${err.code}): ${err.message}`);
+    }
+    console.log(this);
+    navigator.geolocation.getCurrentPosition(success, error, options);
+  }
+
+
   render() {
+    const settings = {
+      start: 2,
+      min: 0,
+      max: 10,
+      step: 1,
+      onChange: {}
+    };
+  
     return (
       <div className="App"> 
-        <LocationsMap></LocationsMap>
+        <Header>Edmonton-Local</Header>
+        <LocationsMap {...this.state} ></LocationsMap>
+        <Button className="ui button" onClick={this.handleGetMyLocation.bind(this)} style={{backgroundColor:"limegreen"}}>Get My Location</Button>
+        <Form.Input
+            action="Test"
+            label={`Test`}
+            min={1}
+            max={100}
+            name='Test'
+            onChange={() => {}}
+            step={100}
+            type='range'
+            value={5}
+          />
         <LocationsTable locations={this.state.locations} ></LocationsTable>;
       </div> 
     ) 
