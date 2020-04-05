@@ -1,10 +1,20 @@
 import React from 'react';
+import L from 'leaflet'
 
 import 'semantic-ui-css/semantic.min.css'
 import './App.css';
 
 import { Map, Marker, Popup, TileLayer } from 'react-leaflet'
 import { Table, Header, Button, Form} from 'semantic-ui-react'
+
+var greenIcon = new L.Icon({
+  iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41]
+});
 
 class Location {
   // Data class representing one row from the Google Sheets Document.
@@ -23,6 +33,9 @@ class Location {
     this.dietaryNeeds        = entry["gsx$dietaryneedsserved"].$t;
     this.address             = entry["gsx$address"].$t;
     this.comments            = entry["gsx$comments"].$t;
+
+    this.lat                 = entry["gsx$lat"].$t;
+    this.long                = entry["gsx$long"].$t;
   }
 
   // TODO: Probably add some functionality to unpack attributes (addresses, hours, cusine types etc...)
@@ -30,8 +43,21 @@ class Location {
 }
 
 class LocationsMap extends React.Component {
+
+  renderLocationMarker(location) {
+    return (
+      <Marker position={ [location.lat, location.long]} icon={greenIcon}>
+        <Popup>{location.name}</Popup>
+      </Marker>
+    )
+  }
+
   render() {
     const position = [this.props.lat, this.props.lng];
+  
+    const locationsWithLongLat = this.props.locations.filter( (location) => {return !!(!!location.lat && !!location.long)})
+    console.log(locationsWithLongLat);
+
     return (
       <Map center={position} zoom={this.props.zoom}>
         <TileLayer
@@ -43,6 +69,8 @@ class LocationsMap extends React.Component {
             A pretty CSS3 popup. <br/> Easily customizable.
           </Popup>
         </Marker>
+
+        {locationsWithLongLat.map(this.renderLocationMarker)}
       </Map>
     );
   }
@@ -189,6 +217,7 @@ class App extends React.Component {
             value={5}
           />
         <LocationsTable locations={this.state.locations} ></LocationsTable>;
+        {this.renderLocationsAsJSONArray()}
       </div> 
     ) 
   }
