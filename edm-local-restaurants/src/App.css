@@ -9,3 +9,11 @@ body{
   max-width: 80%;
   min-width: 400px;
 }
+
+.leaflet-container {
+  margin: 10px auto;
+
+  height: 600px;
+  width: 80%;
+  min-width: 400px;
+}
