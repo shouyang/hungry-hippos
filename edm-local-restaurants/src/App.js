@@ -61,35 +61,19 @@ class App extends React.Component {
   }
 
   handleGetMyLocation() {
-    var options = {
-      enableHighAccuracy: false,
-      timeout: 5000,
-      maximumAge: 1000
-    };
-    
     const success = (pos) =>  {
       var crd = pos.coords;
       this.setState({lat: crd.latitude, lng: crd.longitude})
     }
 
-
     function error(err) {
       console.warn(`ERROR(${err.code}): ${err.message}`);
     }
-    console.log(this);
-    navigator.geolocation.getCurrentPosition(success, error, options);
+    navigator.geolocation.getCurrentPosition(success, error);
   }
 
 
   render() {
-    const settings = {
-      start: 2,
-      min: 0,
-      max: 10,
-      step: 1,
-      onChange: {}
-    };
-  
     return (
       <div className="App"> 
         <PageHeader></PageHeader>
