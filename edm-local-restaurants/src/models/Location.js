@@ -22,7 +22,7 @@ class Location {
   
 
     hasLocationData() {
-      return !!(!!this.lat && !!this.long);
+      return (!!this.lat && !!this.long);
     }
 
     // TODO: Probably add some functionality to unpack attributes (addresses, hours, cusine types etc...)
