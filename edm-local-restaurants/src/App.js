@@ -1,5 +1,7 @@
 import React from 'react';
+import 'semantic-ui-css/semantic.min.css'
 import './App.css';
+import { Icon, Label, Menu, Table } from 'semantic-ui-react'
 
 
 class Location {
@@ -24,6 +26,49 @@ class Location {
   // TODO: Probably add some functionality to unpack attributes (addresses, hours, cusine types etc...)
   // TODO: Maybe add resolvers to Google Maps, Food Delivery etc...
 }
+
+class LocationsTable extends React.Component {
+  // Table to display list of locations
+  static keysToInclude = ["name", "cusine", "area", "hours", "delivery", "pickup", "giftcards", "dietaryNeeds", "address", "comments"]
+
+  renderHeader() {
+    return (
+      <Table.Header>
+        {LocationsTable.keysToInclude.map( (key) => (<Table.HeaderCell>{key}</Table.HeaderCell>))}
+      </Table.Header>
+    )
+  }
+
+  renderBody(locations) {
+    return (
+      <Table.Body>
+        {locations.map(this.renderLocationRow) }
+      </Table.Body>
+    )
+  }
+
+  renderLocationRow(location) {
+    return (
+      <Table.Row>
+        {
+          LocationsTable.keysToInclude.map(
+          (key) => <Table.Cell>{location[key]}</Table.Cell>
+          )
+        }
+      </Table.Row>
+    )
+  }
+
+  render() {
+    return (
+      <Table celled>
+        {this.renderHeader(this.props.locations)}
+        {this.renderBody(this.props.locations)}
+      </Table>
+    )
+  }
+}
+
 
 class GoogleSheetsParser {
   // Handler for requesting and parsing Google Sheets lists requests.
@@ -74,15 +119,17 @@ class App extends React.Component {
   }
 
   render() {
-    return this.renderLocationsAsJSONArray();
+    return (
+      <div className="App"> 
+        <LocationsTable locations={this.state.locations} ></LocationsTable>;
+      </div> 
+    ) 
   }
 
   renderLocationsAsJSONArray() {
     // Helper function to quickly display whats in locations.
     return <div>{ JSON.stringify(this.state.locations, null, "\t") }</div>;
   }
-
-
 }
 export default App;
 
