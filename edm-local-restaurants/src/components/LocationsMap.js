@@ -1,24 +1,24 @@
 import React from 'react';
 import L from 'leaflet'
 
-import { Map, Marker, Popup, TileLayer } from 'react-leaflet'
+import { Map, Marker, Popup, TileLayer, Circle } from 'react-leaflet'
 
 
 class LocationsMap extends React.Component {
   // Leaflet map used to display locations. Uses a combination of 'leaflet' and 'react-leaflet' to render. 
 
   render() {
-    const userPosition = [this.props.lat, this.props.lng];
-    const locationsWithMapData = this.props.locations.filter( (location) => {return location.hasLocationData()})
+    const userPosition = [this.props.map.lat, this.props.map.lng];
+    const locationsWithMapData = this.props.locations.filter( (location) => {return location.hasLocationData() && location.shouldBeShown})
 
     return (
-      <Map center={userPosition} zoom={this.props.zoom}>
+      <Map center={userPosition} zoom={this.props.map.zoom}>
         <TileLayer attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors' url='https://{s}.tile.osm.org/{z}/{x}/{y}.png'/>
         <Marker position={userPosition}>
           <Popup> A pretty CSS3 popup. <br/> Easily customizable.</Popup>
         </Marker>
-
-        {locationsWithMapData.map(this.renderLocationMarker)}
+        <Circle center={userPosition} radius={1000}></Circle>
+        {locationsWithMapData.map(this.renderLocationMarker.bind(this))}
       </Map>
     );
   }
@@ -34,9 +34,11 @@ class LocationsMap extends React.Component {
 
   renderLocationMarker(location) {
     // Helper function to render location map markers.
+    // const distanceToLocation = location.distanceToLocationMeters(this.props.map.lat, this.props.map.lng);
     return (
       <Marker position={[location.lat, location.long]} icon={LocationsMap.greenIcon}>
-        <Popup>{location.name}</Popup>
+        <Popup>{location.name} 
+        </Popup>
       </Marker>
     )
   }

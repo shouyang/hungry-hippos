@@ -45,33 +45,16 @@ class GoogleSheetsParser {
 class App extends React.Component {
   state =  {
     locations : [],
-    lat: 53.5461,
-    lng: -113.4938,
-    zoom: 13,
-    value:5
+    map: {
+      lat: 53.5461,
+      lng: -113.4938,
+      zoom: 13
+    }
   }
 
   componentDidMount() {
     this.populateLocationsFromGoogleSheets();
   }
-
-  async populateLocationsFromGoogleSheets() {
-    let newState = { locations: await GoogleSheetsParser.getLocationsFromGoogleSheets() };
-    this.setState(newState);
-  }
-
-  handleGetMyLocation() {
-    const success = (pos) =>  {
-      var crd = pos.coords;
-      this.setState({lat: crd.latitude, lng: crd.longitude})
-    }
-
-    function error(err) {
-      console.warn(`ERROR(${err.code}): ${err.message}`);
-    }
-    navigator.geolocation.getCurrentPosition(success, error);
-  }
-
 
   render() {
     return (
@@ -83,10 +66,10 @@ class App extends React.Component {
             action="Test"
             label={`Test`}
             min={1}
-            max={100}
+            max={10}
             name='Test'
             onChange={() => {}}
-            step={100}
+            step={1}
             type='range'
             value={5}
           />
@@ -99,6 +82,28 @@ class App extends React.Component {
   renderLocationsAsJSONArray() {
     // Helper function to quickly display whats in locations.
     return <div>{ JSON.stringify(this.state.locations, null, "\t") }</div>;
+  }
+
+  async populateLocationsFromGoogleSheets() {
+    let newState = { locations: await GoogleSheetsParser.getLocationsFromGoogleSheets() };
+    this.setState(newState);
+  }
+
+  handleGetMyLocation() {
+    console.log("handleGetMyLocation");
+    const success = (pos) =>  {
+      var crd = pos.coords;
+      this.setState({lat: crd.latitude, lng: crd.longitude})
+    }
+
+    function error(err) {
+      console.warn(`ERROR(${err.code}): ${err.message}`);
+    }
+    navigator.geolocation.getCurrentPosition(success, error);
+  }
+
+  handleFilterPlaces() {
+
   }
 }
 export default App;
