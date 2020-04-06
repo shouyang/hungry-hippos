@@ -15,7 +15,7 @@ class LocationsTable extends React.Component {
     "delivery": "Delivery",
     "pickup": "Pickup",
     "giftcards": "Gift Cards",
-    "dietaryNeeds": "Dietary Needs",
+    "dietaryNeeds": "Diet Needs",
     "address": "Address",
     "comments": "Notes"
   }
