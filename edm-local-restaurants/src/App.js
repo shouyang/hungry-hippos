@@ -60,7 +60,7 @@ class App extends React.Component {
     return (
       <div className="App"> 
         <PageHeader></PageHeader>
-        <LocationsMap {...this.state} handleMarkerDragEnd={this.handleMarkerDragEnd}></LocationsMap>
+        <LocationsMap {...this.state} handleMarkerDragEnd={this.handleMarkerDragEnd.bind(this)}></LocationsMap>
         <Form.Input
             label={`Test`}
             min={1}
@@ -108,12 +108,12 @@ class App extends React.Component {
     navigator.geolocation.getCurrentPosition(success, error);
   }
 
-  handleFilterRadiusChanged = (event) => {
+  handleFilterRadiusChanged(event) {
     this.setState({filterRadius: event.target.value})
     this.handleFilterLocation();
   } 
 
-  handleFilterLocation = () => {
+  handleFilterLocation() {
     const updateLocations = (location) => {
       const distanceToMarker = location.distanceToLocationMeters(this.state.lat, this.state.lng);
       if (distanceToMarker <= this.state.filterRadius * 1000) {
@@ -129,7 +129,7 @@ class App extends React.Component {
     this.setState( {locations: newLocations});
   }
 
-  handleFilterReset = () => {
+  handleFilterReset() {
     const updateLocations = (location) => {
       location.shouldBeShown = true;
       return location;
@@ -139,11 +139,12 @@ class App extends React.Component {
     this.setState( {locations: newLocations});
   }
 
-  handleMarkerDragEnd = (event) => {
+  handleMarkerDragEnd(event) {
     const {lat, lng} = event.target._latlng;
     this.setState({lat, lng});
     this.handleFilterLocation();
   }
+
 }
 
 export default App;
