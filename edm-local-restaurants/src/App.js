@@ -46,12 +46,10 @@ class App extends React.Component {
   state =  {
     isFilterSet: false,
     locations : [],
-    map: {
-      lat: 53.5461,
-      lng: -113.4938,
-      zoom: 13,
-      filterRadius: 5
-    }
+    lat: 53.5461,
+    lng: -113.4938,
+    zoom: 13,
+    filterRadius: 5
   }
 
   componentDidMount() {
@@ -68,7 +66,7 @@ class App extends React.Component {
             min={1}
             max={10}
             step={1}
-            value={this.state.map.filterRadius}
+            value={this.state.filterRadius}
             name='Test'
             onChange={this.handleFilterRadiusChanged.bind(this)}
 
@@ -101,7 +99,7 @@ class App extends React.Component {
       var crd = pos.coords;
 
       console.log(crd);
-      this.setState({map:{ ...this.state.map, lat: crd.latitude, lng: crd.longitude}})
+      this.setState({lat: crd.latitude, lng: crd.longitude})
     }
 
     function error(err) {
@@ -111,14 +109,14 @@ class App extends React.Component {
   }
 
   handleFilterRadiusChanged = (event) => {
-    this.setState({map: { ...this.state.map, filterRadius: event.target.value}})
+    this.setState({filterRadius: event.target.value})
     this.handleFilterLocation();
   } 
 
   handleFilterLocation = () => {
     const updateLocations = (location) => {
-      const distanceToMarker = location.distanceToLocationMeters(this.state.map.lat, this.state.map.lng);
-      if (distanceToMarker <= this.state.map.filterRadius * 1000) {
+      const distanceToMarker = location.distanceToLocationMeters(this.state.lat, this.state.lng);
+      if (distanceToMarker <= this.state.filterRadius * 1000) {
         location.shouldBeShown = true;
       }
       else {
@@ -143,7 +141,7 @@ class App extends React.Component {
 
   handleMarkerDragEnd = (event) => {
     const {lat, lng} = event.target._latlng;
-    this.setState({map: { ...this.state.map, lat, lng}});
+    this.setState({lat, lng});
     this.handleFilterLocation();
   }
 }

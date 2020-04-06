@@ -7,7 +7,6 @@ class LocationsTable extends React.Component {
 
   // Table to display list of locations
   static keysToInclude = ["name", "cusine", "area", "hours", "delivery", "pickup", "giftcards", "dietaryNeeds", "address", "comments"]
-
   render() {
     const locationsTodisplay = this.props.locations.filter( (location) => location.shouldBeShown)
 
