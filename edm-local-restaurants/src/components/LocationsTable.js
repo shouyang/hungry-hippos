@@ -6,17 +6,35 @@ class LocationsTable extends React.Component {
   // Renders a table from an array of locations.
 
   // Table to display list of locations
-  static keysToInclude = ["name", "cusine", "area", "hours", "delivery", "pickup", "giftcards", "dietaryNeeds", "address", "comments"]
+  static keysToInclude     = ["name", "cusine", "area", "hours", "delivery", "pickup", "giftcards", "dietaryNeeds", "address", "comments"]
+  static keysToColumnNames = {
+    "name" : "Business Name",
+    "cusine" : "Cusine",
+    "area": "Area",
+    "hours": "Hours",
+    "delivery": "Delivery",
+    "pickup": "Pickup",
+    "giftcards": "Gift Cards",
+    "dietaryNeeds": "Dietary Needs",
+    "address": "Address",
+    "comments": "Notes"
+  }
+ 
+ 
   render() {
     const locationsTodisplay = this.props.locations.filter( (location) => location.shouldBeShown)
 
-    return (<Table>{this.renderTableHeader(this.props.locations)}{this.renderTableBody(locationsTodisplay)}</Table>)
+    return (
+      <Table>
+        {this.renderTableHeader(this.props.locations)}
+        {this.renderTableBody(locationsTodisplay)}
+      </Table>)
   }
 
   renderTableHeader() {
     return (
       <Table.Header>
-        {LocationsTable.keysToInclude.map( (key) => (<Table.HeaderCell>{key}</Table.HeaderCell>))}
+        {LocationsTable.keysToInclude.map( (key) => (<Table.HeaderCell>{LocationsTable.keysToColumnNames[key]}</Table.HeaderCell>))}
       </Table.Header>
     )
   }
@@ -26,7 +44,7 @@ class LocationsTable extends React.Component {
   }
 
   renderTableRow(location) {
-    return  <Table.Row>{LocationsTable.keysToInclude.map( (key) => <Table.Cell>{location[key]}</Table.Cell>)}</Table.Row>
+    return <Table.Row>{LocationsTable.keysToInclude.map( (key) => <Table.Cell>{location[key]}</Table.Cell>)}</Table.Row>
   }
 }
 

@@ -100,6 +100,7 @@ class App extends React.Component {
 
       console.log(crd);
       this.setState({lat: crd.latitude, lng: crd.longitude})
+      this.handleFilterLocation();
     }
 
     function error(err) {
