@@ -14,9 +14,7 @@ class LocationsMap extends React.Component {
     return (
       <Map center={userPosition} zoom={this.props.zoom}>
         <TileLayer attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors' url='https://{s}.tile.osm.org/{z}/{x}/{y}.png'/>
-        <Marker position={userPosition} draggable={true} onDragend={this.props.handleMarkerDragEnd}>
-          <Popup> A pretty CSS3 popup. <br/> Easily customizable.</Popup>
-        </Marker>
+        <Marker position={userPosition} draggable={true} onDragend={this.props.handleMarkerDragEnd} />
         <Circle center={userPosition} radius={this.props.filterRadius * 1000}></Circle>
         {locationsWithMapData.map(this.renderLocationMarker.bind(this))}
       </Map>

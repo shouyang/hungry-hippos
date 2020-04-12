@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Form } from 'semantic-ui-react'
+import { Button, Input } from 'semantic-ui-react'
 
 import 'semantic-ui-css/semantic.min.css'
 import './App.css';
@@ -60,23 +60,20 @@ class App extends React.Component {
     return (
       <div className="App"> 
         <PageHeader></PageHeader>
-        <LocationsMap {...this.state} handleMarkerDragEnd={this.handleMarkerDragEnd.bind(this)}></LocationsMap>
-        <Form.Input
-            label={`Test`}
-            min={1}
-            max={10}
-            step={1}
-            value={this.state.filterRadius}
-            name='Test'
-            onChange={this.handleFilterRadiusChanged.bind(this)}
 
-            type='range'
-            
-          />
-        <Button className="ui button" onClick={this.handleGetMyLocation.bind(this)} style={{backgroundColor:"limegreen"}}>Get My Location</Button>
-        <Button className="ui button" onClick={this.handleFilterLocation.bind(this)} style={{backgroundColor:"limegreen"}}>Filter For Locations Near Me</Button>
-        <Button className="ui button" onClick={this.handleFilterReset.bind(this)} style={{backgroundColor:"limegreen"}}>Reset Filter</Button>
-        
+
+        <div className="map-container">
+          <LocationsMap {...this.state} handleMarkerDragEnd={this.handleMarkerDragEnd.bind(this)}></LocationsMap>
+
+          <hr />
+          <div cnassNmae="map-buttons">
+            <Button className="ui button" onClick={this.handleGetMyLocation.bind(this)} style={{backgroundColor:"limegreen", float: "left"}}>Get My Location</Button>
+            <Input label={{ basic: true, content: `Up to ${this.state.filterRadius} Kilometres Away` }} labelPosition='right' min={1} max={10} step={0.1} value={this.state.filterRadius} onChange={this.handleFilterRadiusChanged.bind(this)} type='range' style={ {float: "left", backgroundColor:"limegreen"} }/>
+            <Button className="ui button" onClick={this.handleFilterLocation.bind(this)} style={{backgroundColor:"limegreen", float: "left"}}>Filter For Locations Near Me</Button>
+            <Button className="ui button" onClick={this.handleFilterReset.bind(this)} style={{backgroundColor:"limegreen", float: "right"}}>Reset Filter</Button>
+          </div>
+        </div>
+
         <LocationsTable locations={this.state.locations} ></LocationsTable>;
         {this.renderLocationsAsJSONArray()}
       </div> 

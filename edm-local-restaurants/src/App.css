@@ -6,14 +6,22 @@ body{
 .App {
   margin: 0 auto;
 
-  max-width: 80%;
-  min-width: 400px;
+  max-width: 65%;
+  min-width: 300px;
+}
+
+.map-container {
+  margin: 10px auto;
+
+  height: 500px;
+  width: 80%;
+  min-width: 300px;
+}
+
+.map-buttons {
+  text-align: center;
 }
 
 .leaflet-container {
-  margin: 10px auto;
-
-  height: 600px;
-  width: 80%;
-  min-width: 400px;
+  height: 500px;
 }

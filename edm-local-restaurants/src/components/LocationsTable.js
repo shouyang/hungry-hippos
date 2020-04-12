@@ -6,11 +6,10 @@ class LocationsTable extends React.Component {
   // Renders a table from an array of locations.
 
   // Table to display list of locations
-  static keysToInclude     = ["name", "cusine", "area", "hours", "delivery", "pickup", "giftcards", "dietaryNeeds", "address", "comments"]
+  static keysToInclude     = ["name", "cusine", "hours", "delivery", "pickup", "giftcards", "dietaryNeeds", "address", "comments"]
   static keysToColumnNames = {
     "name" : "Business Name",
     "cusine" : "Cusine",
-    "area": "Area",
     "hours": "Hours",
     "delivery": "Delivery",
     "pickup": "Pickup",
