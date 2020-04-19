@@ -9,13 +9,7 @@ import Location from "./models/Location";
 import LocationsMap from "./components/LocationsMap";
 import LocationsTable from "./components/LocationsTable";
 
-import {
-  urls,
-  simpleStyles,
-  cssClasses,
-  defaultStates,
-  defaultProps,
-} from "./config/AppConfig.js";
+import { urls, simpleStyles, cssClasses, defaultStates, defaultProps, labels } from "./config/AppConfig.js";
 
 class GoogleSheetsParser {
   // Handler for requesting and parsing Google Sheets lists requests.
@@ -61,7 +55,14 @@ class App extends React.Component {
               style={simpleStyles.greenFloatLeft}
               onClick={this.handleGetMyLocation.bind(this)}
             >
-              Get My Location
+              {labels.getCurrentLocation}
+            </Button>
+            <Button
+              className={cssClasses.mapButtons}
+              onClick={this.filterByDistance.bind(this)}
+              style={simpleStyles.greenFloatLeft}
+            >
+              Filter To Locations Near Me
             </Button>
             <Input
               {...defaultProps.locationSlider}
@@ -75,22 +76,14 @@ class App extends React.Component {
             />
             <Button
               className={cssClasses.mapButtons}
-              onClick={this.handleFilterLocation.bind(this)}
-              style={simpleStyles.greenFloatLeft}
-            >
-              Filter For Locations Near Me
-            </Button>
-            <Button
-              className={cssClasses.mapButtons}
-              onClick={this.handleFilterReset.bind(this)}
+              onClick={this.resetLocationFilter.bind(this)}
               style={simpleStyles.greenFloatRight}
             >
               Reset Filter
             </Button>
           </div>
         </div>
-        <LocationsTable locations={this.state.locations}></LocationsTable>;
-        {this.renderLocationsAsJSONArray()}
+        <LocationsTable locations={this.state.locations}></LocationsTable>;{this.renderLocationsAsJSONArray()}
       </div>
     );
   }
@@ -101,32 +94,33 @@ class App extends React.Component {
   }
 
   handleGetMyLocation() {
-    console.log("handleGetMyLocation");
     const success = (pos) => {
-      var crd = pos.coords;
-
-      console.log(crd);
+      const crd = pos.coords;
       this.setState({ lat: crd.latitude, lng: crd.longitude });
-      this.handleFilterLocation();
+      this.filterByDistance();
     };
 
-    function error(err) {
+    const error = (err) => {
       console.warn(`ERROR(${err.code}): ${err.message}`);
-    }
+    };
+
     navigator.geolocation.getCurrentPosition(success, error);
+  }
+
+  handleMarkerDragEnd(event) {
+    const { lat, lng } = event.target._latlng;
+    this.setState({ lat, lng });
+    this.filterByDistance();
   }
 
   handleFilterRadiusChanged(event) {
     this.setState({ filterRadius: event.target.value });
-    this.handleFilterLocation();
+    this.filterByDistance();
   }
 
-  handleFilterLocation() {
+  filterByDistance() {
     const updateLocations = (location) => {
-      const distanceToMarker = location.distanceToLocationMeters(
-        this.state.lat,
-        this.state.lng
-      );
+      const distanceToMarker = location.distanceToLocationMeters(this.state.lat, this.state.lng);
       if (distanceToMarker <= this.state.filterRadius * 1000) {
         location.shouldBeShown = true;
       } else {
@@ -135,24 +129,16 @@ class App extends React.Component {
       return location;
     };
 
-    const newLocations = this.state.locations.map(updateLocations);
-    this.setState({ locations: newLocations });
+    this.setState({ locations: this.state.locations.map(updateLocations) });
   }
 
-  handleFilterReset() {
+  resetLocationFilter() {
     const updateLocations = (location) => {
       location.shouldBeShown = true;
       return location;
     };
 
-    const newLocations = this.state.locations.map(updateLocations);
-    this.setState({ locations: newLocations });
-  }
-
-  handleMarkerDragEnd(event) {
-    const { lat, lng } = event.target._latlng;
-    this.setState({ lat, lng });
-    this.handleFilterLocation();
+    this.setState({ locations: this.state.locations.map(updateLocations) });
   }
 }
 

@@ -12,9 +12,7 @@ function distanceInKmBetweenEarthCoordinates(lat1, lon1, lat2, lon2) {
   const lat1x = degreesToRadians(lat1);
   const lat2x = degreesToRadians(lat2);
 
-  const a =
-    sin(dLat / 2) * sin(dLat / 2) +
-    sin(dLon / 2) * sin(dLon / 2) * cos(lat1x) * cos(lat2x);
+  const a = sin(dLat / 2) * sin(dLat / 2) + sin(dLon / 2) * sin(dLon / 2) * cos(lat1x) * cos(lat2x);
   const c = 2 * atan2(sqrt(a), sqrt(1 - a));
   return earthRadiusKm * c;
 }
@@ -66,9 +64,11 @@ class Location {
   }
 
   distanceToLocationMeters(lat, long) {
-    return (
-      distanceInKmBetweenEarthCoordinates(lat, long, this.lat, this.long) * 1000
-    );
+    return distanceInKmBetweenEarthCoordinates(lat, long, this.lat, this.long) * 1000;
+  }
+
+  get googleMapsLink() {
+    return `https://google.com/maps/search/${this.address}`;
   }
 
   // TODO: Probably add some functionality to unpack attributes (addresses, hours, cusine types etc...)

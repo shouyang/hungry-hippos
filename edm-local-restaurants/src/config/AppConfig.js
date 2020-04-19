@@ -18,7 +18,7 @@ export const defaultStates = {
     locations: [],
     lat: 53.5461,
     lng: -113.4938,
-    zoom: 13,
+    zoom: 11,
     filterRadius: 5,
   },
 };
