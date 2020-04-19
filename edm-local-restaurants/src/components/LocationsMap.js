@@ -35,6 +35,7 @@ const statusIcons = {
   Open: greenIcon,
   "Appears Closed": orangeIcon,
   Closed: redIcon,
+  "": yellowIcon,
 };
 class LocationsMap extends React.Component {
   // Leaflet map used to display locations. Uses a combination of 'leaflet' and 'react-leaflet' to render.
@@ -60,13 +61,28 @@ class LocationsMap extends React.Component {
 
   renderLocationMarker(location) {
     // Helper function to render location map markers.
+    const generateBoldedField = (label, data) => (
+      <div>
+        <b>{label}: </b>
+        {data || "--"}
+      </div>
+    );
 
     const icon = statusIcons[location.status] || yellowIcon;
 
     return (
       <Marker position={[location.lat, location.long]} icon={icon}>
         <Popup>
-          {location.name} {location.distanceToLocationMeters(this.props.lat, this.props.lng)}
+          <h5>{location.name}</h5>
+          <span>
+            <a href={location.googleMapsLink}>Google Maps</a>
+          </span>
+          <hr />
+          {generateBoldedField("Address", location.address)}
+          {generateBoldedField("Hours", location.hours)}
+          {generateBoldedField("Cusine", location.cusine)}
+          {generateBoldedField("Address", location.address)}
+          {generateBoldedField("Notes", location.notes)}
         </Popup>
       </Marker>
     );
