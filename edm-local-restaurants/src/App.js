@@ -9,12 +9,18 @@ import Location from "./models/Location";
 import LocationsMap from "./components/LocationsMap";
 import LocationsTable from "./components/LocationsTable";
 
-import { AppConfig } from "./config/AppConfig.js";
+import {
+  urls,
+  simpleStyles,
+  cssClasses,
+  defaultStates,
+  defaultProps,
+} from "./config/AppConfig.js";
 
 class GoogleSheetsParser {
   // Handler for requesting and parsing Google Sheets lists requests.
   static async getLocationsFromGoogleSheets() {
-    const response = await fetch(AppConfig.urls.googleSheetsURL);
+    const response = await fetch(urls.googleSheetsURL);
     const json = await response.json();
 
     const entriesJSON = json.feed.entry;
@@ -26,61 +32,58 @@ class GoogleSheetsParser {
 }
 
 class App extends React.Component {
-  state = { ...AppConfig.defaultState };
+  state = { ...defaultStates.app };
 
   componentDidMount() {
     this.populateLocationsFromGoogleSheets();
   }
 
   async populateLocationsFromGoogleSheets() {
-    let newState = {
+    this.setState({
       locations: await GoogleSheetsParser.getLocationsFromGoogleSheets(),
-    };
-    this.setState(newState);
+    });
   }
 
   render() {
-    const { mapSection: mapConfig } = AppConfig;
-
     return (
       <div className="App">
         <PageHeader></PageHeader>
-        <div className={mapConfig.css.mapContainer}>
+        <div className={cssClasses.mapContainer}>
           <LocationsMap
             {...this.state}
             handleMarkerDragEnd={this.handleMarkerDragEnd.bind(this)}
           ></LocationsMap>
 
           <hr />
-          <div className={mapConfig.css.mapControls}>
+          <div className={cssClasses.mapControls}>
             <Button
-              className={mapConfig.css.mapButtons}
-              style={mapConfig.style.greenFloatLeft}
+              className={cssClasses.mapButtons}
+              style={simpleStyles.greenFloatLeft}
               onClick={this.handleGetMyLocation.bind(this)}
             >
               Get My Location
             </Button>
             <Input
-              {...mapConfig.inputAttributes.inputLocationRange}
+              {...defaultProps.locationSlider}
               label={{
                 basic: true,
                 content: `Up to ${this.state.filterRadius} Kilometres Away`,
               }}
               value={this.state.filterRadius}
               onChange={this.handleFilterRadiusChanged.bind(this)}
-              style={mapConfig.style.greenFloatLeft}
+              style={simpleStyles.greenFloatLeft}
             />
             <Button
-              className={mapConfig.css.mapButtons}
+              className={cssClasses.mapButtons}
               onClick={this.handleFilterLocation.bind(this)}
-              style={mapConfig.style.greenFloatLeft}
+              style={simpleStyles.greenFloatLeft}
             >
               Filter For Locations Near Me
             </Button>
             <Button
-              className={mapConfig.css.mapButtons}
+              className={cssClasses.mapButtons}
               onClick={this.handleFilterReset.bind(this)}
-              style={mapConfig.style.greenFloatRight}
+              style={simpleStyles.greenFloatRight}
             >
               Reset Filter
             </Button>
