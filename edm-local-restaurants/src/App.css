@@ -1,5 +1,4 @@
-
-body{
+body {
   background-color: palevioletred;
 }
 
@@ -24,4 +23,11 @@ body{
 
 .leaflet-container {
   height: 500px;
+}
+
+.location-data-row:hover {
+  background-color: lightyellow;
+}
+.location-data-row:active {
+  background-color: lightblue;
 }

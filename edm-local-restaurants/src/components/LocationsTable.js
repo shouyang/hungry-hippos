@@ -1,50 +1,63 @@
-import React from 'react';
+import React from "react";
 
-import { Table } from 'semantic-ui-react'
+import { Table } from "semantic-ui-react";
 
 class LocationsTable extends React.Component {
   // Renders a table from an array of locations.
 
   // Table to display list of locations
-  static keysToInclude     = ["name", "cusine", "hours", "delivery", "pickup", "giftcards", "dietaryNeeds", "address", "comments"]
+  static keysToInclude = [
+    "name",
+    "cusine",
+    "hours",
+    "delivery",
+    "pickup",
+    "giftcards",
+    "dietaryNeeds",
+    "address",
+    "comments",
+  ];
+
   static keysToColumnNames = {
-    "name" : "Business Name",
-    "cusine" : "Cusine",
-    "hours": "Hours",
-    "delivery": "Delivery",
-    "pickup": "Pickup",
-    "giftcards": "Gift Cards",
-    "dietaryNeeds": "Diet Needs",
-    "address": "Address",
-    "comments": "Notes"
-  }
- 
- 
+    name: "Business Name",
+    cusine: "Cusine",
+    hours: "Hours",
+    delivery: "Delivery",
+    pickup: "Pickup",
+    giftcards: "Gift Cards",
+    dietaryNeeds: "Diet Needs",
+    address: "Address",
+    comments: "Notes",
+  };
+
   render() {
-    const locationsTodisplay = this.props.locations.filter( (location) => location.shouldBeShown)
+    const locationsTodisplay = this.props.locations.filter((location) => location.shouldBeShown);
 
     return (
       <Table>
-        {this.renderTableHeader(this.props.locations)}
-        {this.renderTableBody(locationsTodisplay)}
-      </Table>)
+        <Table.Header>
+          {LocationsTable.keysToInclude.map((key) => (
+            <Table.HeaderCell key={`header:${key}`}>{LocationsTable.keysToColumnNames[key]}</Table.HeaderCell>
+          ))}
+        </Table.Header>
+        <Table.Body>{locationsTodisplay.map(this.renderTableRow)}</Table.Body>;
+      </Table>
+    );
   }
 
-  renderTableHeader() {
+  renderTableRow = (location) => {
     return (
-      <Table.Header>
-        {LocationsTable.keysToInclude.map( (key) => (<Table.HeaderCell>{LocationsTable.keysToColumnNames[key]}</Table.HeaderCell>))}
-      </Table.Header>
-    )
-  }
-
-  renderTableBody(locations) {
-    return <Table.Body>{locations.map(this.renderTableRow)}</Table.Body>;
-  }
-
-  renderTableRow(location) {
-    return <Table.Row>{LocationsTable.keysToInclude.map( (key) => <Table.Cell>{location[key]}</Table.Cell>)}</Table.Row>
-  }
+      <Table.Row
+        key={location.name}
+        className="location-data-row"
+        onClick={() => this.props.onRowClick(location.name)}
+      >
+        {LocationsTable.keysToInclude.map((key) => (
+          <Table.Cell key={`${location.name}:${key}`}>{location[key]}</Table.Cell>
+        ))}
+      </Table.Row>
+    );
+  };
 }
 
 export default LocationsTable;

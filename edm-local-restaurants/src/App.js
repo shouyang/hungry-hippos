@@ -27,6 +27,11 @@ class GoogleSheetsParser {
 
 class App extends React.Component {
   state = { ...defaultStates.app };
+  mapPopupRefs = new Map();
+
+  setRef = (key, ref) => {
+    this.mapPopupRefs.set(key, ref);
+  };
 
   componentDidMount() {
     this.populateLocationsFromGoogleSheets();
@@ -46,6 +51,7 @@ class App extends React.Component {
           <LocationsMap
             {...this.state}
             handleMarkerDragEnd={this.handleMarkerDragEnd.bind(this)}
+            setRef={this.setRef}
           ></LocationsMap>
 
           <hr />
@@ -83,7 +89,11 @@ class App extends React.Component {
             </Button>
           </div>
         </div>
-        <LocationsTable locations={this.state.locations}></LocationsTable>;{this.renderLocationsAsJSONArray()}
+        <LocationsTable
+          locations={this.state.locations}
+          onRowClick={this.openMapPopupByName.bind(this)}
+        ></LocationsTable>
+        {this.renderLocationsAsJSONArray()}
       </div>
     );
   }
@@ -132,14 +142,21 @@ class App extends React.Component {
     this.setState({ locations: this.state.locations.map(updateLocations) });
   }
 
-  resetLocationFilter() {
+  resetLocationFilter = () => {
     const updateLocations = (location) => {
       location.shouldBeShown = true;
       return location;
     };
 
     this.setState({ locations: this.state.locations.map(updateLocations) });
-  }
+  };
+
+  openMapPopupByName = (name) => {
+    const popupRef = this.mapPopupRefs.get(name);
+    if (popupRef && popupRef.leafletElement) {
+      popupRef.leafletElement.openPopup();
+    }
+  };
 }
 
 export default App;
