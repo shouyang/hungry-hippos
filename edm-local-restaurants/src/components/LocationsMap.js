@@ -68,7 +68,13 @@ class LocationsMap extends React.Component {
         {data || "--"}
       </div>
     );
+
     const icon = statusIcons[location.status] || yellowIcon;
+
+    const websiteLink = location.website ? <a href={location.website}>ResturantWebsite</a> : "";
+    const deliverySiteLink = location.deliverySite ? <a href={location.deliverySite}>Delivery</a> : "";
+    const fantuanLink = location.fantuan ? <a href={location.fantuan}>Fantuan</a> : "";
+
     return (
       <Marker
         ref={(ref) => this.props.setRef(location.name, ref)}
@@ -79,7 +85,7 @@ class LocationsMap extends React.Component {
         <Popup>
           <h5>{location.name}</h5>
           <span>
-            <a href={location.googleMapsLink}>Google Maps</a>
+            <a href={location.googleMapsLink}>GoogleMaps</a> {websiteLink} {deliverySiteLink} {fantuanLink}
           </span>
           <hr />
           {generateBoldedField("Address", location.address)}

@@ -74,7 +74,7 @@ class App extends React.Component {
               {...defaultProps.locationSlider}
               label={{
                 basic: true,
-                content: `Up to ${this.state.filterRadius} Kilometres Away`,
+                content: `Within ${this.state.filterRadius} Km`,
               }}
               value={this.state.filterRadius}
               onChange={this.handleFilterRadiusChanged.bind(this)}

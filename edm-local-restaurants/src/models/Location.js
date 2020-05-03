@@ -40,6 +40,7 @@ class Location {
     this.comments = getGSXValue("comments");
     this.website = getGSXValue("website");
     this.deliverySite = getGSXValue("deliverysite");
+    this.fantuan = getGSXValue("fantuan");
     this.lat = getGSXValue("lat");
     this.long = getGSXValue("long");
   }

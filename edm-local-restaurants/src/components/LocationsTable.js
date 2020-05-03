@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Table } from "semantic-ui-react";
+import { Table, Label } from "semantic-ui-react";
 
 class LocationsTable extends React.Component {
   // Renders a table from an array of locations.
@@ -8,18 +8,19 @@ class LocationsTable extends React.Component {
   // Table to display list of locations
   static keysToInclude = [
     "name",
+    "status",
     "cusine",
     "hours",
     "delivery",
     "pickup",
     "giftcards",
     "dietaryNeeds",
-    "address",
     "comments",
   ];
 
   static keysToColumnNames = {
     name: "Business Name",
+    status: "Status",
     cusine: "Cusine",
     hours: "Hours",
     delivery: "Delivery",
@@ -46,15 +47,40 @@ class LocationsTable extends React.Component {
   }
 
   renderTableRow = (location) => {
+    const locationHasSkipOrUberEats = !!location.deliverySite;
+    const locationHasFantuan = !!location.fantuan;
+    const deliveryIsUberEats = !!location.deliverySite && location.deliverySite.includes("ubereats.com");
     return (
       <Table.Row
         key={location.name}
         className="location-data-row"
         onClick={() => this.props.onRowClick(location.name)}
       >
-        {LocationsTable.keysToInclude.map((key) => (
-          <Table.Cell key={`${location.name}:${key}`}>{location[key]}</Table.Cell>
-        ))}
+        {LocationsTable.keysToInclude.map((key) => {
+          if (key === "delivery" && locationHasSkipOrUberEats) {
+            return (
+              <Table.Cell>
+                <Label
+                  as="a"
+                  href={location.deliverySite}
+                  color={deliveryIsUberEats ? "green" : "red"}
+                  size="mini"
+                >
+                  {deliveryIsUberEats ? "UberEats" : "SkipTheDishes"}
+                </Label>
+                {locationHasFantuan ? (
+                  <Label as="a" href={location.fantuan} color="yellow" size="mini">
+                    Fantuan
+                  </Label>
+                ) : (
+                  ""
+                )}
+              </Table.Cell>
+            );
+          }
+
+          return <Table.Cell key={`${location.name}:${key}`}>{location[key]}</Table.Cell>;
+        })}
       </Table.Row>
     );
   };
