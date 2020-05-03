@@ -40,7 +40,7 @@ export const simpleStyles = {
 };
 
 export const labels = {
-  getCurrentLocation: "Get My Location",
+  getCurrentLocation: "My Location",
   filterNearLocation: "Filter Near Location",
   resetLocationFilter: "Reset Location Filter",
 };

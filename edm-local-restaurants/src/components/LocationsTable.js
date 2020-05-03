@@ -35,7 +35,7 @@ class LocationsTable extends React.Component {
     const locationsTodisplay = this.props.locations.filter((location) => location.shouldBeShown);
 
     return (
-      <Table>
+      <Table compact size="small">
         <Table.Header>
           {LocationsTable.keysToInclude.map((key) => (
             <Table.HeaderCell key={`header:${key}`}>{LocationsTable.keysToColumnNames[key]}</Table.HeaderCell>

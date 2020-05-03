@@ -85,7 +85,7 @@ class App extends React.Component {
               onClick={this.resetLocationFilter.bind(this)}
               style={simpleStyles.greenFloatRight}
             >
-              Reset Filter
+              Show All Locations
             </Button>
           </div>
         </div>
@@ -93,16 +93,9 @@ class App extends React.Component {
           locations={this.state.locations}
           onRowClick={this.openMapPopupByName.bind(this)}
         ></LocationsTable>
-        {this.renderLocationsAsJSONArray()}
       </div>
     );
   }
-
-  renderLocationsAsJSONArray() {
-    // Helper function to quickly display whats in locations.
-    return <div>{JSON.stringify(this.state.locations, null, "\t")}</div>;
-  }
-
   handleGetMyLocation() {
     const success = (pos) => {
       const crd = pos.coords;
