@@ -19,22 +19,6 @@ function distanceInKmBetweenEarthCoordinates(lat1, lon1, lat2, lon2) {
 
 class Location {
   // Data class representing one row from the Google Sheets Document.
-  static GSXKeys = [
-    "name",
-    "status",
-    "cusine",
-    "area",
-    "hours-unsureofcovid-19hours",
-    "delivery",
-    "pickup",
-    "giftcards",
-    "dietaryneedsserved",
-    "address",
-    "comments",
-    "lat",
-    "long",
-  ];
-
   constructor(entry) {
     function getGSXValue(key) {
       return entry[`gsx$${key}`].$t;
@@ -54,7 +38,8 @@ class Location {
     this.dietaryNeeds = getGSXValue("dietaryneedsserved");
     this.address = getGSXValue("address");
     this.comments = getGSXValue("comments");
-
+    this.website = getGSXValue("website");
+    this.deliverySite = getGSXValue("deliverysite");
     this.lat = getGSXValue("lat");
     this.long = getGSXValue("long");
   }

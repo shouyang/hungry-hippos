@@ -85,7 +85,7 @@ class LocationsMap extends React.Component {
           {generateBoldedField("Address", location.address)}
           {generateBoldedField("Hours", location.hours)}
           {generateBoldedField("Cusine", location.cusine)}
-          {generateBoldedField("Notes", location.notes)}
+          {generateBoldedField("Notes", location.comments)}
         </Popup>
       </Marker>
     );

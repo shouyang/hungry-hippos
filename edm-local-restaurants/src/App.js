@@ -18,7 +18,6 @@ class GoogleSheetsParser {
     const json = await response.json();
 
     const entriesJSON = json.feed.entry;
-
     return entriesJSON.map((entry) => {
       return new Location(entry);
     });
@@ -28,6 +27,7 @@ class GoogleSheetsParser {
 class App extends React.Component {
   state = { ...defaultStates.app };
   mapPopupRefs = new Map();
+  mapContainerRef = React.createRef();
 
   setRef = (key, ref) => {
     this.mapPopupRefs.set(key, ref);
@@ -47,7 +47,7 @@ class App extends React.Component {
     return (
       <div className="App">
         <PageHeader></PageHeader>
-        <div className={cssClasses.mapContainer}>
+        <div ref={this.mapContainerRef} className={cssClasses.mapContainer}>
           <LocationsMap
             {...this.state}
             handleMarkerDragEnd={this.handleMarkerDragEnd.bind(this)}
@@ -111,7 +111,7 @@ class App extends React.Component {
     };
 
     const error = (err) => {
-      console.warn(`ERROR(${err.code}): ${err.message}`);
+      alert("We couldn't seem to get your location. Did you enable some sort of privacy mode?");
     };
 
     navigator.geolocation.getCurrentPosition(success, error);
@@ -129,32 +129,30 @@ class App extends React.Component {
   }
 
   filterByDistance() {
-    const updateLocations = (location) => {
+    const updatedLocations = this.state.locations.map((location) => {
       const distanceToMarker = location.distanceToLocationMeters(this.state.lat, this.state.lng);
-      if (distanceToMarker <= this.state.filterRadius * 1000) {
-        location.shouldBeShown = true;
-      } else {
-        location.shouldBeShown = false;
-      }
-      return location;
-    };
+      location.shouldBeShown = distanceToMarker <= this.state.filterRadius * 1000 ? true : false;
 
-    this.setState({ locations: this.state.locations.map(updateLocations) });
+      return location;
+    });
+
+    this.setState({ locations: updatedLocations });
   }
 
   resetLocationFilter = () => {
-    const updateLocations = (location) => {
+    const updatedLocations = this.state.locations.map((location) => {
       location.shouldBeShown = true;
       return location;
-    };
+    });
 
-    this.setState({ locations: this.state.locations.map(updateLocations) });
+    this.setState({ locations: updatedLocations });
   };
 
   openMapPopupByName = (name) => {
     const popupRef = this.mapPopupRefs.get(name);
     if (popupRef && popupRef.leafletElement) {
       popupRef.leafletElement.openPopup();
+      this.mapContainerRef.current.scrollIntoView(false);
     }
   };
 }
