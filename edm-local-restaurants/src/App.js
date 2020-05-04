@@ -53,22 +53,14 @@ class App extends React.Component {
             handleMarkerDragEnd={this.handleMarkerDragEnd.bind(this)}
             setRef={this.setRef}
           ></LocationsMap>
-
-          <hr />
           <div className={cssClasses.mapControls}>
             <Button
+              size="small"
               className={cssClasses.mapButtons}
               style={simpleStyles.greenFloatLeft}
               onClick={this.handleGetMyLocation.bind(this)}
             >
               {labels.getCurrentLocation}
-            </Button>
-            <Button
-              className={cssClasses.mapButtons}
-              onClick={this.filterByDistance.bind(this)}
-              style={simpleStyles.greenFloatLeft}
-            >
-              Filter To Locations Near Me
             </Button>
             <Input
               {...defaultProps.locationSlider}
@@ -79,8 +71,10 @@ class App extends React.Component {
               value={this.state.filterRadius}
               onChange={this.handleFilterRadiusChanged.bind(this)}
               style={simpleStyles.greenFloatLeft}
+              size="tiny"
             />
             <Button
+              size="small"
               className={cssClasses.mapButtons}
               onClick={this.resetLocationFilter.bind(this)}
               style={simpleStyles.greenFloatRight}

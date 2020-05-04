@@ -53,7 +53,14 @@ class LocationsMap extends React.Component {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         />
-        <Marker position={userPosition} draggable={true} onDragend={this.props.handleMarkerDragEnd} />
+        <Marker position={userPosition} draggable={true} onDragend={this.props.handleMarkerDragEnd}>
+          <Popup>
+            <p>
+              You can drag this around to filter for locations nearby! Alternatively, click on the "My
+              Location" button to set this to your current location.
+            </p>
+          </Popup>
+        </Marker>
         <Circle center={userPosition} radius={this.props.filterRadius * 1000} />
         {locationsWithMapData.map(this.renderLocationMarker.bind(this))}
       </Map>
