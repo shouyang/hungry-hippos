@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "de9d4d7f528feaeb36ad1bb97595ea05",
+    "revision": "613f7288a0639fbe3636c6d098f19fc9",
     "url": "/hungry-hippos/index.html"
   },
   {
