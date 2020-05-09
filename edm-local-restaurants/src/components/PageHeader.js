@@ -25,12 +25,9 @@ class PageHeader extends React.Component {
         <Accordion.Content active={activeIndex === 0}>
           <p>Hello friends,</p>
           <p>
-            As y'all probably know, the COVID19 crisis is hitting everyone hard, especially small businesses.
-            A lot of restaurants/food services are switching to takeout/delivery only, or closing. It'd be
-            pretty sick if we could support them, so I've started a crowdsourcing spreadsheet for all the
-            Asian restaurants/businesses in Edmonton that are open for pickup or takeout 😁 that everyone can
-            use, or contribute to. I'd be pretty sad if all my fav places were closed in 2 months, so pls help
-            a girl out and try to prevent that from happening.
+            Hello everyone! As you may know, the COVID19 crsis is hitting everyone hard, especially small businesses. A friend and I have put together a website listing many Asian restaurants in the Edmonton Area that still do delivery or pickups, because they have been hit particularly hard. This is not a comprehensive list of all Asian restarunts in Edmonton, so please feel free to use the Google sheet to submit more. 
+
+            As the Alberta economy reopens in the coming months and after the COVID19 pandemic subsides, we hope this website will be a contineous way to share, support, and order from delicious Asian restaurants across Alberta.
           </p>
           <p>Click on the pins or on a row in the table to get started!</p>
         </Accordion.Content>
