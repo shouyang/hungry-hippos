@@ -1,27 +1,27 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "25254e1f9af95fb77c73700746ab6734",
+    "revision": "91f208bfa97107ec8962d11fcafcc0da",
     "url": "/hungry-hippos/index.html"
   },
   {
-    "revision": "fd68b13ba17b6cda1a37",
+    "revision": "905046e72cbceb017041",
     "url": "/hungry-hippos/static/css/2.51fcc392.chunk.css"
   },
   {
-    "revision": "9ca5eca14e5dd60780dd",
-    "url": "/hungry-hippos/static/css/main.eb9140b4.chunk.css"
+    "revision": "05f63349dbdfb452b20e",
+    "url": "/hungry-hippos/static/css/main.8b840c0d.chunk.css"
   },
   {
-    "revision": "fd68b13ba17b6cda1a37",
-    "url": "/hungry-hippos/static/js/2.e3fbe0a0.chunk.js"
+    "revision": "905046e72cbceb017041",
+    "url": "/hungry-hippos/static/js/2.55c46172.chunk.js"
   },
   {
     "revision": "e6aedcaa3286583760438019bdce4174",
-    "url": "/hungry-hippos/static/js/2.e3fbe0a0.chunk.js.LICENSE.txt"
+    "url": "/hungry-hippos/static/js/2.55c46172.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "9ca5eca14e5dd60780dd",
-    "url": "/hungry-hippos/static/js/main.7fc08d2c.chunk.js"
+    "revision": "05f63349dbdfb452b20e",
+    "url": "/hungry-hippos/static/js/main.84d740fd.chunk.js"
   },
   {
     "revision": "d57b5b9288457fd227d3",
