@@ -2,6 +2,7 @@ import React from "react";
 import L from "leaflet";
 
 import { Map, Marker, Popup, TileLayer, Circle } from "react-leaflet";
+import { Label } from "semantic-ui-react";
 
 const commonIconProperties = {
   iconSize: [18, 25],
@@ -78,9 +79,33 @@ class LocationsMap extends React.Component {
 
     const icon = statusIcons[location.status] || yellowIcon;
 
-    const websiteLink = location.website ? <a href={location.website}>ResturantWebsite</a> : "";
-    const deliverySiteLink = location.deliverySite ? <a href={location.deliverySite}>Delivery</a> : "";
-    const fantuanLink = location.fantuan ? <a href={location.fantuan}>Fantuan</a> : "";
+    const labelOptions = {
+      as: "a",
+      size: "tiny",
+      color: "teal",
+    };
+
+    const websiteLink = location.website ? (
+      <Label {...labelOptions} href={location.website}>
+        Website
+      </Label>
+    ) : (
+      ""
+    );
+    const deliverySiteLink = location.deliverySite ? (
+      <Label {...labelOptions} href={location.deliverySite}>
+        Delivery
+      </Label>
+    ) : (
+      ""
+    );
+    const fantuanLink = location.fantuan ? (
+      <Label {...labelOptions} href={location.fantuan}>
+        Fantuan
+      </Label>
+    ) : (
+      ""
+    );
 
     return (
       <Marker
@@ -92,7 +117,10 @@ class LocationsMap extends React.Component {
         <Popup>
           <h5>{location.name}</h5>
           <span>
-            <a href={location.googleMapsLink}>GoogleMaps</a> {websiteLink} {deliverySiteLink} {fantuanLink}
+            <Label {...labelOptions} href={location.googleMapsLink}>
+              Google Maps
+            </Label>{" "}
+            {websiteLink} {deliverySiteLink} {fantuanLink}
           </span>
           <hr />
           {generateBoldedField("Address", location.address)}
