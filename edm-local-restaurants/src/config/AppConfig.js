@@ -35,8 +35,8 @@ export const defaultProps = {
 };
 
 export const simpleStyles = {
-  greenFloatLeft: { backgroundColor: "limegreen", float: "left" },
-  greenFloatRight: { backgroundColor: "limegreen", float: "right" },
+  greenFloatLeft: { float: "left" },
+  greenFloatRight: { float: "right" },
 };
 
 export const labels = {

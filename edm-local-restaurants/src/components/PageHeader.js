@@ -37,6 +37,7 @@ class PageHeader extends React.Component {
 
           <Label
             as="a"
+            color="teal"
             href="https://docs.google.com/spreadsheets/d/1YvbMUEEGha3hEQ6CDd0K1C4WVkAMmszbBRuRQ-ndxKU/edit?fbclid=IwAR0-PcTBQiVML5SDvJGDhYxiY3ya_gQOv8hQOKg4sX94gZpwvJW6hEnuLPE#gid=0"
           >
             Google Sheets

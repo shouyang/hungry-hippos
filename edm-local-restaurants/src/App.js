@@ -55,6 +55,7 @@ class App extends React.Component {
           ></LocationsMap>
           <div className={cssClasses.mapControls}>
             <Button
+              color="teal"
               size="small"
               className={cssClasses.mapButtons}
               style={simpleStyles.greenFloatLeft}
@@ -72,8 +73,10 @@ class App extends React.Component {
               onChange={this.handleFilterRadiusChanged.bind(this)}
               style={simpleStyles.greenFloatLeft}
               size="tiny"
+              color="teal"
             />
             <Button
+              color="teal"
               size="small"
               className={cssClasses.mapButtons}
               onClick={this.resetLocationFilter.bind(this)}
